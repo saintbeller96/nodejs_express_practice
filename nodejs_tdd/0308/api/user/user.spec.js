@@ -2,10 +2,19 @@
 const request = require('supertest');
 const should  = require('should')
 const app = require('../../index');
+const models = require('../../models');
 
 describe('Get /users는', ()=>{
+    const users = [{name: 'alice'}, {name: 'bek'}, {name: 'chris'},]
+    before( () => {
+        return models.sequelize.sync({force: true});
+    });
+    before( () => models.User.bulkCreate(users));
+
     describe('성공시', ()=> {
-        it('유저 객체를 담은 개열로 응답한다', (done) => {      
+
+
+        it('유저 객체를 담은 개열로 응답한다', (done) => {
             request(app)
                 .get('/users')
                 .end((err, res)=>{
@@ -35,6 +44,12 @@ describe('Get /users는', ()=>{
 });
 
 describe('Get /users/:id는', () => {
+    const users = [{name: 'alice'}, {name: 'bek'}, {name: 'chris'},]
+    before( () => {
+        return models.sequelize.sync({force: true});
+    });
+    before( () => models.User.bulkCreate(users));
+
     describe('성공시', () => {
         it('Id 가 1인 유저 객체를 반환한다', (done) => {
             request(app)
@@ -63,6 +78,13 @@ describe('Get /users/:id는', () => {
 });
 
 describe('Delete /users/:id', () => {
+
+    const users = [{name: 'alice'}, {name: 'bek'}, {name: 'chris'},]
+    before( () => {
+        return models.sequelize.sync({force: true});
+    });
+    before( () => models.User.bulkCreate(users));
+
     describe('성공시', () => {
         it('204를 응답한다', (done) => {
             request(app)
@@ -82,6 +104,13 @@ describe('Delete /users/:id', () => {
 });
 
 describe('Post /users', () => {
+
+    const users = [{name: 'alice'}, {name: 'bek'}, {name: 'chris'},]
+    before( () => {
+        return models.sequelize.sync({force: true});
+    });
+    before( () => models.User.bulkCreate(users));
+
     describe('성공시', () => {
         let body;
         let name = 'daniel'
@@ -123,7 +152,14 @@ describe('Post /users', () => {
     })
 });
 
-describe('Put /users/:id', () => {
+describe.only('Put /users/:id', () => {
+
+    const users = [{name: 'alice'}, {name: 'bek'}, {name: 'chris'},]
+    before( () => {
+        return models.sequelize.sync({force: true});
+    });
+    before( () => models.User.bulkCreate(users));
+
     describe('성공시', () => {
         it('변경된 name을 응답한다', (done) => {
             const name = 'chally';

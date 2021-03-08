@@ -1,5 +1,11 @@
 const app = require('../index')
+const syncDb = require('./sync-db');
 
-app.listen(3000, () => {
-    console.log('Server is running');
-});
+syncDb().then( _ => {
+    console.log('Sync database');
+    
+    app.listen(3000, () => {
+        console.log('Server is running');
+    });
+})
+
